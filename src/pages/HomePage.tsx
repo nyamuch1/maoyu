@@ -3,7 +3,7 @@ import { componentsNav } from '../app/navigation.ts'
 import Badge from '../components/ui/Badge.tsx'
 import ThemeSettings from '../components/ui/ThemeSettings.tsx'
 import { buttonClass } from '../components/ui/buttonClasses.ts'
-import { ChevronRightIcon, GridIcon } from '../components/ui/icons.tsx'
+import { AlertIcon, ChevronRightIcon, GridIcon } from '../components/ui/icons.tsx'
 
 const STACK = ['Vite 7', 'React 19', 'React Router 7', 'Tailwind CSS 4', 'TypeScript 5.9']
 
@@ -135,6 +135,28 @@ export default function HomePage() {
             <span className="block text-base font-medium text-ink">常见布局 Layouts</span>
             <span className="mt-0.5 block text-sm text-ink-muted">
               后台 / 内容社区 / 营销电商共 14 套布局，每套都有可交互的真实路由。
+            </span>
+          </span>
+          <span className="flex items-center gap-1 text-sm text-primary">
+            查看示例
+            <ChevronRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
+          </span>
+        </Link>
+      </section>
+
+      {/* 错误页入口 */}
+      <section>
+        <Link
+          to="/errors"
+          className="group flex flex-wrap items-center gap-4 rounded-card border border-line/70 bg-surface p-6 shadow-clay-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-clay focus-visible:ring-4 focus-visible:ring-primary/25 focus-visible:outline-none"
+        >
+          <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-danger-soft text-danger">
+            <AlertIcon className="size-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-base font-medium text-ink">错误页 Errors</span>
+            <span className="mt-0.5 block text-sm text-ink-muted">
+              403 / 404 / 500 / 502 / 503 状态页，含路由兜底与网关静态页。
             </span>
           </span>
           <span className="flex items-center gap-1 text-sm text-primary">

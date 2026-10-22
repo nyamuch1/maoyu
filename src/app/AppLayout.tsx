@@ -40,6 +40,9 @@ export default function AppLayout() {
             <NavLink to="/layouts" className={headerLinkClass}>
               布局
             </NavLink>
+            <NavLink to="/errors" className={headerLinkClass}>
+              错误页
+            </NavLink>
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
@@ -53,14 +56,23 @@ export default function AppLayout() {
       </main>
 
       <footer className="border-t border-line/70">
-        <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-2 px-5 py-6 text-xs text-ink-subtle">
-          <p className="flex items-center gap-2">
-            maoyusu · Soft UI 组件库 · 明暗双主题
-            <Link to="/errors" className="hover:text-primary">
+        <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-3 px-5 py-6 text-xs text-ink-subtle">
+          <p>maoyusu · Soft UI 组件库 · 明暗双主题</p>
+          <nav className="flex flex-wrap items-center gap-4">
+            <Link to="/components/buttons" className="transition-colors hover:text-primary">
+              组件库
+            </Link>
+            <Link to="/layouts" className="transition-colors hover:text-primary">
+              布局画廊
+            </Link>
+            <Link
+              to="/errors"
+              className="font-medium text-ink-muted transition-colors hover:text-primary"
+            >
               错误页
             </Link>
-          </p>
-          <p className="font-mono">React Router 7 · Vite 7 · Tailwind CSS 4</p>
+            <span className="font-mono">React Router 7 · Vite 7 · Tailwind CSS 4</span>
+          </nav>
         </div>
       </footer>
     </div>
