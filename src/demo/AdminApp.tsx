@@ -5,6 +5,7 @@ import Button from '../components/ui/Button.tsx'
 import Checkbox from '../components/ui/Checkbox.tsx'
 import { Field, Input, Select, Textarea } from '../components/ui/Field.tsx'
 import Progress from '../components/ui/Progress.tsx'
+import StatusPage from '../components/ui/StatusPage.tsx'
 import Switch from '../components/ui/Switch.tsx'
 import {
   ArrowLeftIcon,
@@ -464,15 +465,5 @@ export function AdminMessages() {
 }
 
 export function AdminNotFound() {
-  return (
-    <div className="grid h-full place-items-center text-center">
-      <div>
-        <p className="font-mono text-5xl font-bold text-primary/25">404</p>
-        <p className="mt-2 text-sm text-ink-muted">后台里没有这个页面</p>
-        <Link to="/admin" className="mt-3 inline-block text-sm text-primary hover:underline">
-          回到概览
-        </Link>
-      </div>
-    </div>
-  )
+  return <StatusPage code={404} compact backTo="/admin" backLabel="回到概览" />
 }

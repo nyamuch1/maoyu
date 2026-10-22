@@ -78,18 +78,20 @@ pnpm dev          # http://localhost:5173
 
 ## 路由结构
 
-| 路径                    | 页面                    | 说明                                     |
-| ----------------------- | ----------------------- | ---------------------------------------- |
-| `/`                     | HomePage                | 首页：介绍、组件入口卡片、主题与令牌速览 |
-| `/components`           | → `/components/buttons` | 组件库入口（自动重定向）                 |
-| `/components/tokens`    | TokensPage              | 基础配色 / Design Tokens                 |
-| `/components/buttons`   | ButtonsPage             | 按钮                                     |
-| `/components/selection` | SelectionPage           | 选择与状态                               |
-| `/components/form`      | FormPage                | 表单                                     |
-| `/components/table`     | TablePage               | 表格                                     |
-| `/components/feedback`  | FeedbackPage            | 反馈与展示                               |
-| `/layouts`              | LayoutsPage             | 常见布局：后台管理 / 文档三栏 / 登录居中 |
-| `*`                     | NotFoundPage            | 404                                      |
+| 路径                    | 页面                    | 说明                                      |
+| ----------------------- | ----------------------- | ----------------------------------------- |
+| `/`                     | HomePage                | 首页：介绍、组件入口卡片、主题与令牌速览  |
+| `/components`           | → `/components/buttons` | 组件库入口（自动重定向）                  |
+| `/components/tokens`    | TokensPage              | 基础配色 / Design Tokens                  |
+| `/components/buttons`   | ButtonsPage             | 按钮                                      |
+| `/components/selection` | SelectionPage           | 选择与状态                                |
+| `/components/form`      | FormPage                | 表单                                      |
+| `/components/table`     | TablePage               | 表格                                      |
+| `/components/feedback`  | FeedbackPage            | 反馈与展示                                |
+| `/layouts`              | LayoutsPage             | 常见布局：后台管理 / 文档三栏 / 登录居中  |
+| `/errors`               | ErrorCatalogPage        | 错误页目录（403 / 404 / 500 / 502 / 503） |
+| `/error/:code`          | ErrorCodePage           | 可直接分享的状态页，如 `/error/502`       |
+| `*`                     | NotFoundPage            | 404                                       |
 
 `createBrowserRouter` + 嵌套路由：`AppLayout`（头部 / 页脚）→ `ComponentsLayout`（目录 + `<Outlet />`）。
 新增一个组件页只需三步：
@@ -163,6 +165,36 @@ src/layouts/
 预览区固定 900×620 以呈现桌面比例，窄屏下横向滚动；每个布局下方有结构要点 / 适用场景 / 落地建议。
 
 > 这些只是静态预览。顶部「打开真实页面」会跳到 `src/demo/` 里对应的可交互路由页面（含 `:productId` / `:slug` / `:threadId` 等参数与页面间跳转）。
+
+## 错误页
+
+统一状态页组件 `src/components/ui/StatusPage.tsx`，覆盖 403 / 404 / 500 / 502 / 503，自带明暗主题、请求 ID 与操作入口。
+
+| 入口           | 说明                                                    |
+| -------------- | ------------------------------------------------------- |
+| `/errors`      | 错误页目录，点卡片直接打开对应页面                      |
+| `/error/:code` | 可直接分享的错误页，如 `/error/502`；非法 code 回落 404 |
+| 任意未知地址   | 站点内 404（`*` 路由）                                  |
+| 路由渲染异常   | `errorElement` → 500 状态页（dev 环境附带原始错误信息） |
+| 示例站点内部   | `/admin/xxx`、`/shop/xxx` 等落在各自 Shell 内的紧凑 404 |
+
+网关 / 静态托管还需要不依赖 JS 的错误页，`public/` 下已提供（共用 `public/error.css`，跟随系统明暗）：
+
+- `404.html`、`500.html`、`502.html`、`503.html`（503 带 30 秒自动刷新）
+
+```nginx
+error_page 404 /404.html;
+error_page 500 /500.html;
+error_page 502 /502.html;
+error_page 503 /503.html;
+error_page 504 /502.html;
+
+location / {
+  try_files $uri $uri/ /index.html;
+}
+```
+
+新增状态码：在 `STATUS_COPY` 补一条文案，并在 `/error/:code` 的白名单里加上即可。
 
 ## 主题系统：跟随系统 / 浅色 / 深色
 

@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom'
 import AppLayout from './AppLayout.tsx'
 import ComponentsLayout from './ComponentsLayout.tsx'
 import DemoNotFound from '../demo/DemoNotFound.tsx'
@@ -8,6 +8,8 @@ import ButtonsPage from '../pages/ButtonsPage.tsx'
 import FeedbackPage from '../pages/FeedbackPage.tsx'
 import FormPage from '../pages/FormPage.tsx'
 import HomePage from '../pages/HomePage.tsx'
+import ErrorCatalogPage from '../pages/ErrorCatalogPage.tsx'
+import ErrorCodePage, { RouteErrorBoundary } from '../pages/ErrorCodePage.tsx'
 import NotFoundPage from '../pages/NotFoundPage.tsx'
 import SelectionPage from '../pages/SelectionPage.tsx'
 import TablePage from '../pages/TablePage.tsx'
@@ -67,105 +69,116 @@ const PricingPage = lazy(() => import('../layouts/PricingLayoutDemo.tsx'))
 const LoginPage = lazy(() => import('../layouts/AuthLayoutDemo.tsx'))
 
 export const router = createBrowserRouter([
-  /* ---------------- 组件库站点（全站头部 / 页脚） ---------------- */
   {
-    path: '/',
-    element: <AppLayout />,
+    // 顶层兜底：任意子路由渲染异常都会落到 500 状态页
+    element: <Outlet />,
+    errorElement: <RouteErrorBoundary />,
     children: [
-      { index: true, element: <HomePage /> },
-
+      /* ---------------- 组件库站点（全站头部 / 页脚） ---------------- */
       {
-        path: 'components',
-        element: <ComponentsLayout />,
+        path: '/',
+        element: <AppLayout />,
         children: [
-          { index: true, element: <Navigate to="buttons" replace /> },
-          { path: 'tokens', element: <TokensPage /> },
-          { path: 'buttons', element: <ButtonsPage /> },
-          { path: 'selection', element: <SelectionPage /> },
-          { path: 'form', element: <FormPage /> },
-          { path: 'table', element: <TablePage /> },
-          { path: 'feedback', element: <FeedbackPage /> },
+          { index: true, element: <HomePage /> },
+
+          {
+            path: 'components',
+            element: <ComponentsLayout />,
+            children: [
+              { index: true, element: <Navigate to="buttons" replace /> },
+              { path: 'tokens', element: <TokensPage /> },
+              { path: 'buttons', element: <ButtonsPage /> },
+              { path: 'selection', element: <SelectionPage /> },
+              { path: 'form', element: <FormPage /> },
+              { path: 'table', element: <TablePage /> },
+              { path: 'feedback', element: <FeedbackPage /> },
+            ],
+          },
+
+          { path: 'layouts', element: <LayoutsPage /> },
+          { path: 'errors', element: <ErrorCatalogPage /> },
+          { path: '*', element: <NotFoundPage /> },
         ],
       },
 
-      { path: 'layouts', element: <LayoutsPage /> },
-      { path: '*', element: <NotFoundPage /> },
+      /* ---------------- 后台 App：/admin + 二级页面 ---------------- */
+      {
+        path: '/admin',
+        element: <AdminShell />,
+        children: [
+          { index: true, element: <AdminDashboard /> },
+          { path: 'settings', element: <AdminSettings /> },
+          { path: 'messages', element: <AdminMessages /> },
+          { path: '*', element: <AdminNotFound /> },
+        ],
+      },
+
+      /* ---------------- 论坛：/community → /community/t/:threadId ---------------- */
+      {
+        path: '/community',
+        element: <CommunityShell />,
+        children: [
+          { index: true, element: <ForumPage /> },
+          { path: 't/:threadId', element: <ThreadPage /> },
+          { path: '*', element: <DemoNotFound to="/community" label="返回论坛首页" /> },
+        ],
+      },
+
+      /* ---------------- 商城：/shop → /shop/products/:productId → /shop/checkout ---------------- */
+      {
+        path: '/shop',
+        element: <ShopShell />,
+        children: [
+          { index: true, element: <ProductListPage /> },
+          { path: 'products/:productId', element: <ProductDetailPage /> },
+          { path: 'checkout', element: <CheckoutPage /> },
+          { path: '*', element: <DemoNotFound to="/shop" label="返回商品列表" /> },
+        ],
+      },
+
+      /* ---------------- 博客：/blog → /blog/:slug ---------------- */
+      {
+        path: '/blog',
+        element: <BlogShell />,
+        children: [
+          { index: true, element: <BlogHomePage /> },
+          { path: ':slug', element: <ArticlePage /> },
+          { path: '*', element: <DemoNotFound to="/blog" label="返回文章列表" /> },
+        ],
+      },
+
+      /* ---------------- 文档：/docs → /docs/:section ---------------- */
+      { path: '/docs', element: <DocsPage /> },
+      { path: '/docs/:section', element: <DocsPage /> },
+
+      /* ---------------- 独立单页：营销 / 价格 / 登录 ---------------- */
+      {
+        path: '/landing',
+        element: (
+          <DemoPage>
+            <LandingPage />
+          </DemoPage>
+        ),
+      },
+      {
+        path: '/pricing',
+        element: (
+          <DemoPage>
+            <PricingPage />
+          </DemoPage>
+        ),
+      },
+      {
+        path: '/login',
+        element: (
+          <DemoPage>
+            <LoginPage />
+          </DemoPage>
+        ),
+      },
+
+      /* ---------------- 可直接分享的错误页：/error/:code ---------------- */
+      { path: '/error/:code', element: <ErrorCodePage /> },
     ],
-  },
-
-  /* ---------------- 后台 App：/admin + 二级页面 ---------------- */
-  {
-    path: '/admin',
-    element: <AdminShell />,
-    children: [
-      { index: true, element: <AdminDashboard /> },
-      { path: 'settings', element: <AdminSettings /> },
-      { path: 'messages', element: <AdminMessages /> },
-      { path: '*', element: <AdminNotFound /> },
-    ],
-  },
-
-  /* ---------------- 论坛：/community → /community/t/:threadId ---------------- */
-  {
-    path: '/community',
-    element: <CommunityShell />,
-    children: [
-      { index: true, element: <ForumPage /> },
-      { path: 't/:threadId', element: <ThreadPage /> },
-      { path: '*', element: <DemoNotFound to="/community" label="返回论坛首页" /> },
-    ],
-  },
-
-  /* ---------------- 商城：/shop → /shop/products/:productId → /shop/checkout ---------------- */
-  {
-    path: '/shop',
-    element: <ShopShell />,
-    children: [
-      { index: true, element: <ProductListPage /> },
-      { path: 'products/:productId', element: <ProductDetailPage /> },
-      { path: 'checkout', element: <CheckoutPage /> },
-      { path: '*', element: <DemoNotFound to="/shop" label="返回商品列表" /> },
-    ],
-  },
-
-  /* ---------------- 博客：/blog → /blog/:slug ---------------- */
-  {
-    path: '/blog',
-    element: <BlogShell />,
-    children: [
-      { index: true, element: <BlogHomePage /> },
-      { path: ':slug', element: <ArticlePage /> },
-      { path: '*', element: <DemoNotFound to="/blog" label="返回文章列表" /> },
-    ],
-  },
-
-  /* ---------------- 文档：/docs → /docs/:section ---------------- */
-  { path: '/docs', element: <DocsPage /> },
-  { path: '/docs/:section', element: <DocsPage /> },
-
-  /* ---------------- 独立单页：营销 / 价格 / 登录 ---------------- */
-  {
-    path: '/landing',
-    element: (
-      <DemoPage>
-        <LandingPage />
-      </DemoPage>
-    ),
-  },
-  {
-    path: '/pricing',
-    element: (
-      <DemoPage>
-        <PricingPage />
-      </DemoPage>
-    ),
-  },
-  {
-    path: '/login',
-    element: (
-      <DemoPage>
-        <LoginPage />
-      </DemoPage>
-    ),
   },
 ])

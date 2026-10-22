@@ -367,3 +367,21 @@ export function ClockIcon(props: IconProps) {
     </Svg>
   )
 }
+
+export function HomeIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="m3.5 10.5 8.5-7 8.5 7V20a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 20v-9.5Z" />
+      <path d="M9.5 21.5v-7h5v7" />
+    </Svg>
+  )
+}
+
+export function RefreshIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M20.5 11a8.5 8.5 0 1 1-2.6-6" />
+      <path d="M20.5 4v5h-5" />
+    </Svg>
+  )
+}

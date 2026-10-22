@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import ThemeToggle from '../components/ui/ThemeToggle.tsx'
 import { useTheme } from './theme-context.ts'
 
@@ -54,7 +54,12 @@ export default function AppLayout() {
 
       <footer className="border-t border-line/70">
         <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-2 px-5 py-6 text-xs text-ink-subtle">
-          <p>maoyusu · Soft UI 组件库 · 明暗双主题</p>
+          <p className="flex items-center gap-2">
+            maoyusu · Soft UI 组件库 · 明暗双主题
+            <Link to="/errors" className="hover:text-primary">
+              错误页
+            </Link>
+          </p>
           <p className="font-mono">React Router 7 · Vite 7 · Tailwind CSS 4</p>
         </div>
       </footer>
