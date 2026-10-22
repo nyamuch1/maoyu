@@ -1,6 +1,7 @@
-import { Link, NavLink, Outlet, useParams } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation, useParams } from 'react-router-dom'
 import Badge from '../components/ui/Badge.tsx'
 import Button from '../components/ui/Button.tsx'
+import { usePageTitle } from '../hooks/usePageTitle.ts'
 import {
   BookIcon,
   ChartIcon,
@@ -145,6 +146,9 @@ const ACTIVE = ['林', '苏', '周', '赵', '陈']
 
 /** 论坛站外壳：真实导航 + <Outlet /> */
 export function CommunityShell() {
+  const { pathname } = useLocation()
+  usePageTitle(pathname === '/community' ? '论坛' : undefined)
+
   return (
     <div className="min-h-dvh bg-canvas text-ink">
       <header className="sticky top-0 z-20 border-b border-line/70 bg-surface/90 backdrop-blur-xl">
@@ -171,8 +175,8 @@ export function CommunityShell() {
             >
               首页
             </NavLink>
-            <span className="rounded-full px-2.5 py-1.5 text-ink-muted">精选</span>
-            <span className="rounded-full px-2.5 py-1.5 text-ink-muted">排行榜</span>
+            <span className="rounded-full px-2.5 py-1.5 text-ink-muted max-sm:hidden">精选</span>
+            <span className="rounded-full px-2.5 py-1.5 text-ink-muted max-sm:hidden">排行榜</span>
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
@@ -181,7 +185,10 @@ export function CommunityShell() {
               搜索帖子
             </span>
             <Button size="sm">发帖</Button>
-            <Link to="/layouts" className="text-[11px] text-ink-subtle hover:text-primary">
+            <Link
+              to="/layouts"
+              className="text-[11px] text-ink-subtle hover:text-primary max-sm:hidden"
+            >
               布局画廊
             </Link>
           </div>
@@ -197,7 +204,7 @@ export function CommunityShell() {
 
 export function ForumPage() {
   return (
-    <div className="grid gap-3 lg:grid-cols-[1fr_220px]">
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1fr_220px]">
       <div className="space-y-3">
         <div className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-3">
           {BOARDS.map(({ name, desc, topics, today, Icon, gradient }) => (
@@ -239,18 +246,23 @@ export function ForumPage() {
               <Link
                 key={thread.id}
                 to={`/community/t/${thread.id}`}
-                className="flex items-start gap-2 py-2.5 transition-colors hover:bg-surface-2/50"
+                className="flex min-w-0 items-start gap-2 py-2.5 transition-colors hover:bg-surface-2/50"
               >
                 <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-surface-3 text-[10px] font-medium text-ink-muted">
                   {thread.author.slice(0, 1)}
                 </span>
 
                 <div className="min-w-0 flex-1">
-                  <p className="flex items-center gap-1.5 text-xs">
-                    {thread.pinned ? <PinIcon className="size-3 text-primary" /> : null}
-                    <span className="truncate font-medium">{thread.title}</span>
+                  <p className="flex min-w-0 items-center gap-1.5 text-xs">
+                    {thread.pinned ? <PinIcon className="size-3 shrink-0 text-primary" /> : null}
+                    <span className="min-w-0 truncate font-medium">{thread.title}</span>
                     {thread.tag ? (
-                      <Badge tone={thread.pinned ? 'primary' : 'neutral'}>{thread.tag}</Badge>
+                      <Badge
+                        tone={thread.pinned ? 'primary' : 'neutral'}
+                        className="shrink-0 whitespace-nowrap"
+                      >
+                        {thread.tag}
+                      </Badge>
                     ) : null}
                   </p>
                   <p className="mt-0.5 text-[10px] text-ink-subtle">
@@ -335,9 +347,10 @@ export function ForumPage() {
 export function ThreadPage() {
   const { threadId } = useParams()
   const thread = THREADS.find((item) => item.id === threadId) ?? THREADS[0]
+  usePageTitle(thread.title)
 
   return (
-    <div className="grid gap-3 lg:grid-cols-[1fr_250px]">
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1fr_250px]">
       <div className="space-y-3">
         <Link
           to="/community"

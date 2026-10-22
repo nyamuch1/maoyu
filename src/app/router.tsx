@@ -147,15 +147,15 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /* ---------------- 文档：/docs → /docs/:section ---------------- */
-      { path: '/docs', element: <DocsPage /> },
+      /* ---------------- 文档：/docs 重定向到默认章节，保证侧栏高亮 ---------------- */
+      { path: '/docs', element: <Navigate to="/docs/getting-started" replace /> },
       { path: '/docs/:section', element: <DocsPage /> },
 
       /* ---------------- 独立单页：营销 / 价格 / 登录 ---------------- */
       {
         path: '/landing',
         element: (
-          <DemoPage>
+          <DemoPage title="营销首页">
             <LandingPage />
           </DemoPage>
         ),
@@ -163,7 +163,7 @@ export const router = createBrowserRouter([
       {
         path: '/pricing',
         element: (
-          <DemoPage>
+          <DemoPage title="价格">
             <PricingPage />
           </DemoPage>
         ),
@@ -171,7 +171,7 @@ export const router = createBrowserRouter([
       {
         path: '/login',
         element: (
-          <DemoPage>
+          <DemoPage title="登录">
             <LoginPage />
           </DemoPage>
         ),

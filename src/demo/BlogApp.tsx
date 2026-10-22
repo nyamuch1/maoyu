@@ -1,6 +1,7 @@
-import { Link, NavLink, Outlet, useParams } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation, useParams } from 'react-router-dom'
 import Badge from '../components/ui/Badge.tsx'
 import Button from '../components/ui/Button.tsx'
+import { usePageTitle } from '../hooks/usePageTitle.ts'
 import { CalendarIcon, HeartIcon, MailIcon, SparklesIcon } from '../components/ui/icons.tsx'
 
 type Post = {
@@ -61,6 +62,9 @@ const POSTS: Post[] = [
 ]
 
 export function BlogShell() {
+  const { pathname } = useLocation()
+  usePageTitle(pathname === '/blog' ? '博客' : undefined)
+
   return (
     <div className="min-h-dvh bg-canvas text-ink">
       <header className="sticky top-0 z-20 border-b border-line/70 bg-surface/85 backdrop-blur-xl">
@@ -219,6 +223,7 @@ export function BlogHomePage() {
 export function ArticlePage() {
   const { slug } = useParams()
   const post = POSTS.find((item) => item.slug === slug) ?? POSTS[0]
+  usePageTitle(post.title)
 
   return (
     <article className="mx-auto max-w-[680px]">

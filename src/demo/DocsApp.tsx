@@ -1,6 +1,7 @@
 import { Link, NavLink, useParams } from 'react-router-dom'
 import Badge from '../components/ui/Badge.tsx'
 import { BookIcon, SearchIcon } from '../components/ui/icons.tsx'
+import { usePageTitle } from '../hooks/usePageTitle.ts'
 
 type DocSection = {
   key: string
@@ -76,6 +77,7 @@ const TOC = ['前置条件', '安装依赖', '引入样式', '验证效果', '�
 export default function DocsPage() {
   const { section } = useParams()
   const current = SECTIONS.find((item) => item.key === section) ?? SECTIONS[0]
+  usePageTitle(`文档 · ${current.label}`)
 
   return (
     <div className="flex h-dvh flex-col bg-surface text-ink">
@@ -100,8 +102,25 @@ export default function DocsPage() {
         </div>
       </header>
 
-      <div className="grid min-h-0 flex-1 grid-cols-[200px_1fr_160px] max-md:grid-cols-[160px_1fr]">
-        <aside className="min-h-0 overflow-auto border-r border-line/70 p-3">
+      <nav className="flex gap-1.5 overflow-x-auto border-b border-line/70 px-3 py-2 md:hidden">
+        {SECTIONS.map((item) => (
+          <NavLink
+            key={item.key}
+            to={`/docs/${item.key}`}
+            className={({ isActive }) =>
+              [
+                'shrink-0 rounded-full px-2.5 py-1.5 text-[12px]',
+                isActive ? 'bg-primary-soft font-medium text-primary' : 'text-ink-muted',
+              ].join(' ')
+            }
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
+
+      <div className="grid min-h-0 flex-1 grid-cols-[200px_1fr_160px] max-md:grid-cols-1">
+        <aside className="min-h-0 overflow-auto border-r border-line/70 p-3 max-md:hidden">
           <p className="px-2 pb-2 font-mono text-[10px] tracking-[0.16em] text-ink-subtle uppercase">
             指南
           </p>

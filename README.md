@@ -24,14 +24,15 @@ pnpm install
 pnpm dev          # http://localhost:5173
 ```
 
-| 命令                                | 作用                          |
-| ----------------------------------- | ----------------------------- |
-| `pnpm dev`                          | 开发服务器（HMR）             |
-| `pnpm build`                        | 类型检查 + 生产构建到 `dist/` |
-| `pnpm preview`                      | 本地预览构建产物              |
-| `pnpm typecheck`                    | 仅 TypeScript 检查            |
-| `pnpm lint` / `pnpm lint:fix`       | ESLint 检查 / 自动修复        |
-| `pnpm format` / `pnpm format:check` | Prettier 写入 / 校验          |
+| 命令                                | 作用                                            |
+| ----------------------------------- | ----------------------------------------------- |
+| `pnpm dev`                          | 开发服务器（HMR）                               |
+| `pnpm build`                        | 类型检查 + 生产构建到 `dist/`                   |
+| `pnpm preview`                      | 本地预览构建产物                                |
+| `pnpm audit`                        | 冒烟审计：路由 / 标题 / 移动端溢出 / 控制台报错 |
+| `pnpm typecheck`                    | 仅 TypeScript 检查                              |
+| `pnpm lint` / `pnpm lint:fix`       | ESLint 检查 / 自动修复                          |
+| `pnpm format` / `pnpm format:check` | Prettier 写入 / 校验                            |
 
 > Node.js 要求：Vite 7 需要 **Node.js 20.19+ 或 22.12+**。
 
@@ -44,7 +45,7 @@ pnpm dev          # http://localhost:5173
 ├─ eslint.config.js          # ESLint flat config
 ├─ .prettierrc.json          # Prettier 配置（含 Tailwind 类名排序插件）
 ├─ pnpm-workspace.yaml       # pnpm 11：允许 esbuild 执行安装脚本
-├─ scripts/                  # 截图与拼图脚本
+├─ scripts/                  # 截图、主题校验与冒烟审计脚本
 └─ src/
    ├─ main.tsx               # RouterProvider 入口
    ├─ app/
@@ -323,6 +324,7 @@ python scripts/contact_sheet.py            # 拼成 shots/preview-light.png / pr
 
 ```bash
 node scripts/check-theme.mjs http://localhost:5173
+node scripts/audit.mjs http://localhost:5173        # 或 pnpm audit
 ```
 
 ## 常见问题

@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Link, NavLink, Outlet, useNavigate, useParams } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import Badge from '../components/ui/Badge.tsx'
 import Button from '../components/ui/Button.tsx'
+import { usePageTitle } from '../hooks/usePageTitle.ts'
 import {
   CheckIcon,
   CreditCardIcon,
@@ -101,6 +102,9 @@ const CATEGORIES = [
 ]
 
 export function ShopShell() {
+  const { pathname } = useLocation()
+  usePageTitle(pathname === '/shop' ? '商城' : undefined)
+
   return (
     <div className="min-h-dvh bg-canvas text-ink">
       <header className="sticky top-0 z-20 border-b border-line/70 bg-surface/90 backdrop-blur-xl">
@@ -253,6 +257,7 @@ export function ProductListPage() {
 export function ProductDetailPage() {
   const { productId } = useParams()
   const product = PRODUCTS.find((item) => item.id === productId) ?? PRODUCTS[0]
+  usePageTitle(`商品 · ${product.name}`)
   const [spec, setSpec] = useState(0)
   const [qty, setQty] = useState(1)
 
@@ -383,6 +388,7 @@ export function ProductDetailPage() {
 }
 
 export function CheckoutPage() {
+  usePageTitle('确认订单')
   const navigate = useNavigate()
   const [submitted, setSubmitted] = useState(false)
 

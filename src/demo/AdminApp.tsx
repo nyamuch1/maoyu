@@ -6,6 +6,7 @@ import Checkbox from '../components/ui/Checkbox.tsx'
 import { Field, Input, Select, Textarea } from '../components/ui/Field.tsx'
 import Progress from '../components/ui/Progress.tsx'
 import StatusPage from '../components/ui/StatusPage.tsx'
+import { usePageTitle } from '../hooks/usePageTitle.ts'
 import Switch from '../components/ui/Switch.tsx'
 import {
   ArrowLeftIcon,
@@ -76,9 +77,11 @@ export function AdminShell() {
       ? '消息中心'
       : '概览'
 
+  usePageTitle(pathname === '/admin' ? '后台 · 概览' : undefined)
+
   return (
     <div className="flex h-dvh bg-canvas text-ink">
-      <aside className="flex w-[196px] shrink-0 flex-col gap-2 border-r border-line/70 bg-surface p-3">
+      <aside className="flex w-[196px] shrink-0 flex-col gap-2 border-r border-line/70 bg-surface p-3 max-md:hidden">
         <Link to="/admin" className="flex items-center gap-2 px-1">
           <span className="grid size-7 place-items-center rounded-xl bg-linear-to-br from-primary to-primary-2 text-[11px] font-bold text-on-primary">
             m
@@ -155,6 +158,28 @@ export function AdminShell() {
             </p>
             <h1 className="text-sm font-semibold">{title}</h1>
           </div>
+
+          <nav className="flex items-center gap-1 md:hidden">
+            {[
+              { to: '/admin', label: '概览', end: true },
+              { to: '/admin/settings', label: '设置' },
+              { to: '/admin/messages', label: '消息' },
+            ].map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) =>
+                  [
+                    'rounded-full px-2 py-1 text-[11px]',
+                    isActive ? 'bg-primary-soft font-medium text-primary' : 'text-ink-muted',
+                  ].join(' ')
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
 
           <div className="ml-auto flex items-center gap-2">
             <span className="flex h-8 w-44 items-center gap-1.5 rounded-full bg-surface-2 px-2.5 text-xs text-ink-subtle shadow-clay-inset max-sm:hidden">
@@ -273,6 +298,7 @@ export function AdminDashboard() {
 }
 
 export function AdminSettings() {
+  usePageTitle('后台 · 用户设置')
   const [notify, setNotify] = useState(true)
   const [digest, setDigest] = useState(false)
   const [emailPublic, setEmailPublic] = useState(true)
@@ -360,6 +386,7 @@ export function AdminSettings() {
 }
 
 export function AdminMessages() {
+  usePageTitle('后台 · 消息中心')
   const [active, setActive] = useState(0)
 
   return (

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { usePageTitle } from '../hooks/usePageTitle.ts'
 
 const LINKS = [
   { to: '/landing', label: '营销首页' },
@@ -9,8 +10,15 @@ const LINKS = [
   { to: '/layouts', label: '布局画廊' },
 ]
 
+type DemoPageProps = {
+  title: string
+  children: ReactNode
+}
+
 /** 独立单页示例（营销首页 / 价格页 / 登录页）的外壳：右下角挂站点间跳转 */
-export default function DemoPage({ children }: { children: ReactNode }) {
+export default function DemoPage({ title, children }: DemoPageProps) {
+  usePageTitle(title)
+
   return (
     <div className="relative min-h-dvh bg-surface text-ink">
       {children}

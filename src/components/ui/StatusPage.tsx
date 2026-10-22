@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { STATUS_COPY, type StatusCode } from '../../config/status-pages.ts'
 import { buttonClass } from './buttonClasses.ts'
 import { ArrowLeftIcon, HomeIcon, RefreshIcon } from './icons.tsx'
+import { usePageTitle } from '../../hooks/usePageTitle.ts'
 
 type StatusPageProps = {
   code: StatusCode
@@ -30,6 +31,7 @@ export default function StatusPage({
 }: StatusPageProps) {
   const navigate = useNavigate()
   const copy = STATUS_COPY[code]
+  usePageTitle(`${code} · ${copy.title}`)
   const [requestId] = useState(() => Math.random().toString(16).slice(2, 10).toUpperCase() + '-ERR')
 
   return (
