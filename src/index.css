@@ -1,0 +1,81 @@
+@import 'tailwindcss';
+@import './styles/theme.css';
+
+/* 全局基础样式（Tailwind v4：无需 tailwind.config.js） */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    /* 锚点跳转时避开吸顶导航 */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--ink);
+    @apply antialiased;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--primary) 26%, transparent);
+  }
+
+  /* 细滚动条，贴合柔和主题 */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+}
+
+/* ==========================================================================
+   主题切换动画
+   --------------------------------------------------------------------------
+   动画本身由 JS 驱动（src/hooks/useTheme.ts）：
+   - fade / circle：View Transitions 拍下新旧快照，再用 Web Animations 动快照
+   - 时长与缓动统一在 src/config/motion.ts 配置
+   这个文件只负责：关掉浏览器默认快照动画、切换瞬间禁用过渡、定义降级过渡。
+   ========================================================================== */
+
+/* 切换瞬间禁用所有过渡：解决“无动画”模式下导航、链接背景仍有 150ms 渐变的问题 */
+.theme-instant,
+.theme-instant *,
+.theme-instant *::before,
+.theme-instant *::after {
+  transition: none !important;
+}
+
+/* View Transitions：旧快照垫底，新快照的动画交给 JS（淡入 / clip-path 圆形扩散） */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+/* 降级：不支持 View Transitions 时用临时类过渡，时长由 JS 写入 --theme-fallback-ms */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition-property:
+    background-color, border-color, color, fill, stroke, box-shadow, outline-color;
+  transition-duration: var(--theme-fallback-ms, 300ms);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-transitioning,
+  .theme-transitioning *,
+  .theme-transitioning *::before,
+  .theme-transitioning *::after {
+    transition: none !important;
+  }
+}
