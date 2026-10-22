@@ -385,3 +385,48 @@ export function RefreshIcon(props: IconProps) {
     </Svg>
   )
 }
+
+export function PlayIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+    </Svg>
+  )
+}
+
+export function PauseIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M9 5.5v13M15 5.5v13" />
+    </Svg>
+  )
+}
+
+export function MusicIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M9 18V6l10-2v12" />
+      <circle cx="6.5" cy="18" r="2.5" />
+      <circle cx="16.5" cy="16" r="2.5" />
+    </Svg>
+  )
+}
+
+export function HeadphonesIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M4 14v-2a8 8 0 0 1 16 0v2" />
+      <path d="M4 14h2.5a1.5 1.5 0 0 1 1.5 1.5v3A1.5 1.5 0 0 1 6.5 20H5a1 1 0 0 1-1-1v-5Z" />
+      <path d="M20 14h-2.5a1.5 1.5 0 0 0-1.5 1.5v3A1.5 1.5 0 0 0 17.5 20H19a1 1 0 0 0 1-1v-5Z" />
+    </Svg>
+  )
+}
+
+export function ExternalLinkIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M14 4h6v6M20 4l-9 9" />
+      <path d="M18 14v4.5A1.5 1.5 0 0 1 16.5 20h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10" />
+    </Svg>
+  )
+}

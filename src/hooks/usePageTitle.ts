@@ -8,6 +8,6 @@ export function usePageTitle(title?: string) {
   useEffect(() => {
     // undefined 表示“这个层级不设置标题”，交给子页面自己决定（例如 404 页）
     if (!title) return
-    document.title = `${title} · maoyusu`
+    document.title = `${title} · 月白ねむ`
   }, [title])
 }

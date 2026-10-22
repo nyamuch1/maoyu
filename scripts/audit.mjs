@@ -9,24 +9,11 @@ const base = process.argv[2] ?? 'http://localhost:5173'
 
 const ROUTES = [
   '/',
-  '/components/buttons',
-  '/layouts',
-  '/errors',
-  '/admin',
-  '/admin/settings',
-  '/admin/messages',
-  '/community',
-  '/community/t/1042',
-  '/shop',
-  '/shop/products/1042',
-  '/shop/checkout',
-  '/blog',
-  '/blog/design-tokens',
-  '/docs',
-  '/docs/theme',
-  '/landing',
-  '/pricing',
-  '/login',
+  '/works',
+  '/news',
+  '/goods',
+  '/about',
+  '/about#membership',
   '/error/502',
   '/no-such-page',
 ]
@@ -54,14 +41,8 @@ for (const path of ROUTES) {
     activeNav: document.querySelectorAll('[aria-current="page"]').length,
   }))
   if (info.overflow > 1) problems.push(`desktop overflow ${info.overflow}px: ${path}`)
-  if (!info.title.includes('maoyusu')) problems.push(`missing title: ${path} (${info.title})`)
+  if (!info.title.includes('月白ねむ')) problems.push(`missing title: ${path} (${info.title})`)
   desktop.push({ path, ms: Date.now() - started, ...info })
-}
-
-// /docs 应该重定向到默认章节，否则侧栏没有高亮项
-await page.goto(`${base}/docs`, { waitUntil: 'networkidle' })
-if (!new URL(page.url()).pathname.startsWith('/docs/')) {
-  problems.push('/docs 没有重定向到默认章节')
 }
 
 const mobile = []

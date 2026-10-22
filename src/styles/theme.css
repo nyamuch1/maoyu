@@ -29,6 +29,10 @@
   --font-mono:
     'JetBrains Mono', 'Cascadia Code', 'SFMono-Regular', Consolas, 'Courier New', monospace;
 
+  /* 展示字体：圆体，日系创作者站点常用 */
+  --font-display:
+    'Zen Maru Gothic', 'M PLUS Rounded 1c', 'Noto Sans JP', ui-rounded, system-ui, sans-serif;
+
   /* 轻提示进场动画 */
   --animate-toast-in: toast-in 240ms cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -64,6 +68,9 @@
   --color-primary-hover: var(--primary-hover);
   --color-primary-soft: var(--primary-soft);
   --color-on-primary: var(--on-primary);
+  --color-blush: var(--blush);
+  --color-blush-2: var(--blush-2);
+  --color-blush-soft: var(--blush-soft);
 
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
@@ -125,6 +132,11 @@
   --info: #2e7ff0;
   --info-soft: #e8f1fe;
 
+  /* 创作者站点的樱粉点缀色 */
+  --blush: #ec4899;
+  --blush-2: #fb7185;
+  --blush-soft: #fce7f3;
+
   /* 圆角 */
   --r-field: 0.875rem;
   --r-card: 1.5rem;
@@ -170,6 +182,10 @@
   --on-danger: #2a0f10;
   --info: #6cb6ff;
   --info-soft: #152940;
+
+  --blush: #f9a8d4;
+  --blush-2: #fda4af;
+  --blush-soft: #3a1f30;
 
   --elev-0: 0 8px 18px -12px rgb(0 0 0 / 0.6), inset 0 1px 0 rgb(255 255 255 / 0.06);
   --elev-1: 0 18px 40px -22px rgb(0 0 0 / 0.75), inset 0 1px 0 rgb(255 255 255 / 0.06);
